@@ -1,23 +1,49 @@
-import React from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { motion } from 'framer-motion';
 import Spline from '@splinetool/react-spline';
-import { Rocket, Sparkles } from 'lucide-react';
+import { Rocket, Sparkles, Volume2, VolumeX } from 'lucide-react';
 import CodeMatrix from './CodeMatrix';
 
+const ambientSrc = 'https://cdn.pixabay.com/download/audio/2021/08/04/audio_2e2e3b9fda.mp3?filename=ambient-6186.mp3';
+
 const Hero = () => {
+  const audioRef = useRef(null);
+  const [soundOn, setSoundOn] = useState(false);
+
+  useEffect(() => {
+    const a = new Audio(ambientSrc);
+    a.loop = true;
+    a.volume = 0.18;
+    audioRef.current = a;
+    return () => {
+      a.pause();
+      a.src = '';
+    };
+  }, []);
+
+  useEffect(() => {
+    const a = audioRef.current;
+    if (!a) return;
+    if (soundOn) {
+      a.play().catch(() => setSoundOn(false));
+    } else {
+      a.pause();
+    }
+  }, [soundOn]);
+
   return (
     <section id="home" className="relative min-h-[90vh] w-full overflow-hidden bg-[#0a0b0f] text-white">
       {/* Spline 3D Scene as full-width cover */}
       <div className="absolute inset-0 z-0">
         <Spline
-          scene="https://prod.spline.design/Gt5HUob8aGDxOUep/scene.splinecode"
+          scene="https://prod.spline.design/ESO6PnMadasO0hU3/scene.splinecode"
           style={{ width: '100%', height: '100%' }}
         />
       </div>
 
       {/* Matrix-style code rain overlay (non-blocking) */}
       <div className="pointer-events-none absolute inset-0 z-0">
-        <CodeMatrix opacity={0.14} color="#22c55e" />
+        <CodeMatrix opacity={0.12} color="#22c55e" />
       </div>
 
       {/* Subtle gradient overlays for depth (non-blocking) */}
@@ -76,6 +102,19 @@ const Hero = () => {
           >
             Contact Me
           </a>
+
+          {/* Ambient sound toggle */}
+          <button
+            type="button"
+            onClick={() => setSoundOn((s) => !s)}
+            className="ml-0 sm:ml-4 inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-4 py-3 text-sm font-semibold text-white/90 backdrop-blur transition hover:border-white/25 hover:bg-white/10"
+            aria-pressed={soundOn}
+            aria-label="Toggle ambient sound"
+            title="Toggle ambient sound"
+          >
+            {soundOn ? <Volume2 className="h-4 w-4" /> : <VolumeX className="h-4 w-4" />}
+            <span className="hidden sm:inline">Ambient</span>
+          </button>
         </motion.div>
       </div>
     </section>
