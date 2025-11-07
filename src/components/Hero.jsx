@@ -2,22 +2,28 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import Spline from '@splinetool/react-spline';
 import { Rocket, Sparkles } from 'lucide-react';
+import CodeMatrix from './CodeMatrix';
 
 const Hero = () => {
   return (
     <section id="home" className="relative min-h-[90vh] w-full overflow-hidden bg-[#0a0b0f] text-white">
-      {/* Spline 3D Scene */}
+      {/* Spline 3D Scene as full-width cover */}
       <div className="absolute inset-0 z-0">
         <Spline
-          scene="https://prod.spline.design/VJLoxp84lCdVfdZu/scene.splinecode"
+          scene="https://prod.spline.design/Gt5HUob8aGDxOUep/scene.splinecode"
           style={{ width: '100%', height: '100%' }}
         />
       </div>
 
+      {/* Matrix-style code rain overlay (non-blocking) */}
+      <div className="pointer-events-none absolute inset-0 z-0">
+        <CodeMatrix opacity={0.14} color="#22c55e" />
+      </div>
+
       {/* Subtle gradient overlays for depth (non-blocking) */}
       <div className="pointer-events-none absolute inset-0 z-0">
-        <div className="absolute -top-32 left-1/2 h-80 w-80 -translate-x-1/2 rounded-full bg-[radial-gradient(circle_at_center,rgba(56,189,248,0.25),transparent_60%)] blur-2xl" />
-        <div className="absolute bottom-0 right-0 h-72 w-72 rounded-full bg-[radial-gradient(circle_at_center,rgba(250,204,21,0.18),transparent_60%)] blur-2xl" />
+        <div className="absolute -top-32 left-1/2 h-80 w-80 -translate-x-1/2 rounded-full bg-[radial-gradient(circle_at_center,rgba(56,189,248,0.20),transparent_60%)] blur-2xl" />
+        <div className="absolute bottom-0 right-0 h-72 w-72 rounded-full bg-[radial-gradient(circle_at_center,rgba(250,204,21,0.16),transparent_60%)] blur-2xl" />
       </div>
 
       {/* Content */}
